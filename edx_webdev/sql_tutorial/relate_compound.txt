@@ -1,0 +1,48 @@
+?: SQL is a relational database, which means that tables inside a database
+?: can be related to each other in some way.
+?: In order to do so, we can reference, say,
+?: the id field of one table A in some other field of table B.
+!: Inside table B, the id value (which corresponds to table A) is called a 'foreign key'
+
+CREATE TABLE passengers(
+    id SERIAL PRIMARY KEY,
+    name VARCHAR NOT NULL,
+    flight_id INTEGER REFERENCES flights
+);
+
+!: flight_id is marked as being a foreign key for the table flights with REFERENCES
+!: since id is the PRIMARY KEY for flighs, that is the column that flights_id will map to by default
+
+TODO: Once these two tables are created, they can be queried simultaneously:
+?: JOIN indicates that tables flights and passengers are being queried together
+!: JOIN performs an 'inner join': only records where both tables match the query will be returned
+?: ON indicates how the two tables are related
+SELECT origin, destination, name
+FROM flights JOIN passengers
+ON flight_id = flights.id;
+
+SELECT origin, destination, name
+FROM flights JOIN passengers
+ON flight_id = flights.id
+WHERE name = 'Jimmy';
+
+?: LEFT JOIN includes records from the first table listed even if there is no match
+!: RIGHT JOIN is analogous
+SELECT origin, destination, name
+FROM flights LEFT JOIN passengers
+ON flight_id = flights.id
+WHERE name = 'Jammy';
+
+?: When databases get large, it is often useful to 'index' them,
+?: which makes it faster to quickly reference a given field in a table any time a SELECT query is made.
+?: Note, however, that this takes extra space, as well as time.
+?: When updating the table, the index must be updated as well.
+?: It is therefore unwise to index every field of every table unnecessarily.
+
+TODO: Nested queries are yet another way to make more complex selections:
+SELECT * FROM flights WHERE id IN
+(SELECT flight_id FROM passengers GROUP BY flight_id HAVING COUNT(*) > 1);
+
+!: First, in the inner query, a table containing flight_id for flights with more than 1 passenger will be returned
+!: Then, in the outer query, all rows from flights will be selected that have an id in the table returned by the inner query
+!: In other words, this nested query returns flight info for flights with more than 1 passenger

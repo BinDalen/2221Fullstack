@@ -1,0 +1,12 @@
+{% extends "layout.html" %}
+
+{% block heading %}
+    Note submission
+{% endblock %}
+
+{% block body %}
+    <form action="{{url_for('index')}}" method="post">
+        <input type="text" note="note" placeholder="Enter your notes here">
+        <button>Submit</button>
+    </form>
+{% endblock %}

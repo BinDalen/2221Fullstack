@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <!-- render headline passed from flask application.py -->
+    <!-- <h1>{{headline}}</h1> -->
+
+    <!-- Jinja can also run conditionals -->
+    <!-- {% if new_year %}
+        <h2>It is the new year!</h2>
+    {% else %}
+        <h2>It is not the new year yet...</h2>
+    {% endif %} -->
+
+    <!-- and for loops -->
+    <!-- {% for name in names %}
+        <li>{{name}}</li>
+    {% endfor %} -->
+
+    <!-- render notes -->
+    {{notes}}
+
+    <!-- Load a route from href link -->
+    <a href="{{url_for('labs')}}">Go to the labs</a>
+    <a href="{{url_for('form')}}">Go to form</a>
+</body>
+</html>

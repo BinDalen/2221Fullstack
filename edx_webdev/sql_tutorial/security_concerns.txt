@@ -1,0 +1,29 @@
+?: One potential concern when using SQL is that a user will be able
+?: to enter malicious commands into a database.
+
+! A simple login form that asks for a password and username
+! What the user enters in those fields might be put into a SQL command
+! to select their account from a table of accounts like so:
+SELECT * FROM users
+WHERE (username = 'username')
+AND (password = 'password');
+
+?: If someone guesses that there is SQL code like that above running behind the scenes
+?: they could potentially gain access to someone else's account by entering
+?: the following as their password: 1' OR '1' = '1'.
+!: While this may look strange out of context, when it's processed into the SELECT query
+!: this is the result:
+SELECT * FROM users
+WHERE (username = 'hacker')
+AND (password = '1' OR '1' = '1');
+
+!: '1' is always equal to '1', so it doesn't matter what the user's password is
+!: The account with username hacker will still be returned
+
+?: In order to prevent these so-called 'SQL injection attacks',
+?: it is important to 'sanitize' any user input that is going into a SQL command.
+?: This means properly 'escaping' characters like ',
+?: Which can drastically change the meaning of the command,
+?: so that it is interpreted as simply the ' character.
+!: Otherwise there is the risk of malicious users editing or even deleting entire databases that way
+
